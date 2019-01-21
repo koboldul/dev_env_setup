@@ -1,0 +1,73 @@
+TIMEOUT = 600
+USER = "vagrant"
+PASSWORD = "vagrant"
+COMMUNICATOR = "winrm"
+MEMORY_SIZE = 4096
+
+
+Vagrant.configure("2") do |config|
+
+  def create_machine(machine, box, ip, name)
+    machine.vm.box = box
+    machine.vm.network :private_network, ip: ip
+    p "#{name}"
+
+    machine.vm.hostname = name
+    
+    machine.vm.boot_timeout = TIMEOUT
+    machine.winrm.password=USER
+    machine.winrm.username=PASSWORD
+    machine.vm.communicator = COMMUNICATOR
+
+    #machine.vm.provision:"shell", path: "scripts/main.cmd" 
+    
+  end
+
+  CONFIGURE_CLI= 3# boots 2 machines
+  
+  config.vm.define :eqServer do |eqServer|
+    ip = "192.168.33.10"
+    create_machine(eqServer, "gusztavvargadr/w16s-sql17d", ip, "#{:eqServer}")
+  
+    #  PROVISIONERS  #
+    #eqServer.vm.provision:"provisioner_1", type: :shell, path: "code/TOOLS_VG/Tools.NDI.TestAutomation/env/vagrant/start.ps1", args: ["vag_cboot.json", ip, "eqServer"]
+    #eqServer.vm.provision:"provisioner_dev", type: :shell, path: "provision/vagrant/devSetup.ps1", args: [ip]
+  end
+
+  if CONFIGURE_CLI==1
+    config.vm.define :eqCli do |eqCli|
+      ip = "192.168.33.11"
+      create_machine(eqCli, "promet/windows2012", ip, "#{:eqCli}")
+        
+      eqCli.vm.provision:"provisioner_2", type: :shell, path: "provision/vagrant/start.ps1", args: [ip]
+      eqCli.vm.provision:"provisioner_dev", type: :shell, path: "provision/vagrant/devSetup.ps1", args: [ip]
+    end
+  end
+
+  if CONFIGURE_CLI==2
+    config.vm.define :eqW7 do |eqW7|
+      ip = "192.168.33.12"
+      create_machine(eqW7, "opentable/win-7-professional-amd64-nocm", ip, "#{:eqW7}")
+        
+      #eqW7.vm.provision:"provisioner_2", type: :shell, path: "provision/vagrant/start.ps1", args: [ip]
+      eqW7.vm.provision:"provisioner_dev", type: :shell, path: "provision/vagrant/devSetup.ps1", args: [ip]
+    end
+  end
+
+  if CONFIGURE_CLI==3
+    config.vm.define :bio do |bio|
+      ip = "192.168.33.13"
+      create_machine(bio, "ubuntu/bionic64", ip, "#{:bio}")
+    end
+  end
+  
+  config.vm.provider "virtualbox" do |vb|
+     vb.gui = true
+     vb.customize ["modifyvm", :id, "--vram", "40"]	
+	   vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional']    
+     vb.cpus = 4	     
+     vb.memory = MEMORY_SIZE
+  end
+  
+end
+ 
