@@ -1,5 +1,5 @@
 syntax enable
-colorscheme monokai
+colorscheme gruvbox
 set number
 
 inoremap jj <ESC>
@@ -16,3 +16,8 @@ map <F3> :NERDTreeToggle<CR>
 
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
+
+:let g:ps1_nofold_blocks = 1
+:let g:ps1_nofold_blocks = 1
+
+
