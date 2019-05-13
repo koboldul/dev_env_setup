@@ -8,7 +8,7 @@ cinst everything -y
 cinst procexp -y
 cinst wireshark -y
 cinst heidisql -y
-#cinst visualstudio2017professional
+#cinst visualstudio2019community
 cinst postman -y
 cinst python3 -y
 cinst visualstudiocode -y
