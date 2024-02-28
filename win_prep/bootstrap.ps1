@@ -1,9 +1,8 @@
  Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-cinst conemu -y
+cinst nvm -y
 cinst totalcommander  -y
 cinst notepadplusplus -y
-cinst googlechrome -y
 cinst everything -y
 cinst procexp -y
 cinst wireshark -y
