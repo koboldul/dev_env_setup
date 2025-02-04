@@ -1,4 +1,4 @@
-function runAsAdmin($lnk)
+<# function runAsAdmin($lnk)
 {
 	$bytes = [System.IO.File]::ReadAllBytes($lnk)
 	$bytes[0x15] = $bytes[0x15] -bor 0x20 #set byte 21 (0x15) bit 6 (0x20) ON
@@ -63,5 +63,5 @@ $ShortCut.Description = "every";
 $ShortCut.Save()
 
 runAsAdmin($lnk)
-
+ #>
 Copy-Item -path .\cfgs\wincmd.ini -destination c:\Users\Vagrant\AppData\Roaming\GHISLER\wincmd.ini -force
